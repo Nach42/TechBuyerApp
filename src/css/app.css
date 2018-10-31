@@ -1,0 +1,54 @@
+/*
+    Document   : override
+    Created on : <date>
+    Author     : <author>
+    Description:
+        This is where any of your application specific styles should be included
+*/
+
+body {
+    background: #e6e6e7;
+    color: #46485c;
+    font-family: sans-serif;
+}
+.login {
+    text-align: center;
+    width: 250px;
+    position: absolute;
+    top: 58%;
+    left: 50%;
+    margin: -184px 0px 0px -155px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 20px 30px 10px 30px;
+    border-radius: 5px;
+    box-shadow: 0px 1px 0px rgba(0,0,0,0.3),inset 0px 1px 0px rgba(255,255,255,0.07)
+}
+.login h2, h3{
+    color: #46485c;
+    /* font-size: 15px; */
+    font-weight: 550;
+    text-align: center;
+    margin-bottom: 5px;
+}
+.login button{
+    font-size: 18px;
+    font-weight: 550;
+    background: rgb(144, 186, 31);
+    border: 1;
+    border-color: rgb(144, 186, 31);
+    width: 250px;
+    height: 40px;
+    border-radius: 3px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+#logo{
+    background: url('images/avanttic_logo.svg');
+}
+.logo{
+    margin-top: 20px;
+    text-align:center;
+}
