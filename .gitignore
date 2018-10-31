@@ -11,5 +11,7 @@
 hybrid/plugins/*
 !hybrid/plugins/fetch.json
 
+*.exe
+
 .DS_Store
 Thumbs.db
