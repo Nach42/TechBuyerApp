@@ -14,6 +14,7 @@ define(['ojs/ojcore', 'knockout', 'ojs/ojmodule-element-utils', 'ojs/ojmodule-el
       self.flag = ko.observable(false);
       self.username = ko.observable("avanttic");
       self.email = ko.observable("");
+      self.img = ko.observable("css/images/logo2.png");      
 
       // Media queries for repsonsive layouts
       var smQuery = oj.ResponsiveUtils.getFrameworkQuery(oj.ResponsiveUtils.FRAMEWORK_QUERY_KEY.SM_ONLY);

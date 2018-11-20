@@ -7,7 +7,7 @@
  * Your about ViewModel code goes here
  */
 define(['ojs/ojcore', 'knockout', 'jquery', 'appController'],
- function(oj, ko, $) {
+ function(oj, ko, $, app) {
   
     function AboutViewModel() {
       var self = this;

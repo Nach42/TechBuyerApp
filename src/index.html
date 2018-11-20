@@ -42,6 +42,8 @@
 
     <!-- This is where you would add any app specific styling -->
     <link rel="stylesheet" href="css/app.css" type="text/css"/>
+    
+
 
   </head>
   <body class="oj-web-applayout-body">
@@ -64,12 +66,17 @@
          ** the header hamburger icon.
       -->
       <div id="navDrawer" role="navigation" class="oj-contrast-marker oj-web-applayout-offcanvas oj-offcanvas-start">
+        <img data-bind="attr: {src: img}" class="foto"/><br/>
+        <h3 class="profile-name" data-bind="text: username"></h3>
         <oj-navigation-list data="[[navDataSource]]"
                             edge="start"
                             item.renderer="[[oj.KnockoutTemplateUtils.getRenderer('navTemplate', true)]]"
                             on-click="[[toggleDrawer]]"
                             selection="{{router.stateId}}">
         </oj-navigation-list>
+        <div class="oj-flex-bar oj-sm-justify-content-center">
+          <h2 class="app-name">Tech Buyer App</h2>
+        </div>
       </div>
       <div id="pageContent" class="oj-web-applayout-page">
         <!--
@@ -88,7 +95,7 @@
               </oj-button>
             </div>
             <div class="oj-flex-bar-middle oj-sm-align-items-baseline">
-              <a href="http:\\www.avanttic.com"><img src="css/images/avanttic_logo.svg" style="width:200px;" alt="Home" /><br/></a>
+              <img src="css/images/avanttic_logo.svg" style="width:200px;" alt="Home" /><br/>
             <!-- <div id="logo" style="width:20px;height:60px;" class="oj-flex-bar-middle oj-sm-align-items-baseline">
               <span role="img" class="oj-icon demo-oracle-icon" title="Oracle Logo" alt="Oracle Logo"></span> -->
             </div>
