@@ -3,8 +3,25 @@
  The Universal Permissive License (UPL), Version 1.0
  -->
 <div class="oj-hybrid-padding">
-  <h1>Customers Content Area</h1>
+  <h1>Mis listas</h1>
   <div>
-      To change the content of this section, you will make edits to the customers.html file located in the /js/views folder.
+    <div style="margin-top:20px">
+      <div class="navlist" data-bind="if: selectedItems().length > 0">
+          <button data-bind="click: deleteLists"><span class="	fa fa-trash"></span></button>
+      </div>
+      <oj-list-view id="listviewLists" 
+                    style="padding-top:20px;width:100%;height:500px;overflow-x:hidden" 
+                    data="[[dataSource]]" 
+                    item.renderer="[[oj.KnockoutTemplateUtils.getRenderer('renderer_lists', true)]]" 
+                    selection-mode="multiple" selection="{{selectedItems}}" 
+                    scroll-policy="loadMoreOnScroll" scroll-policy-options.fetch-size="10">
+      </oj-list-view>
+    </div>
   </div>
 </div>
+<script type="text/html" id="renderer_lists">
+  <li>
+    <h3 data-bind="text: nombre"></h3>
+    <h4 data-bind="text: createdOn"></h4>
+  </li>
+</script>

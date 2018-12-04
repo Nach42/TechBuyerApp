@@ -30,6 +30,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="icon" href="css/images/favicon.ico" type="image/x-icon" />
 
     <!-- This is the main css file for the default Alta theme -->
@@ -79,6 +80,12 @@
         </div>
       </div>
       <div id="pageContent" class="oj-web-applayout-page">
+        <div id="loading_layer" data-bind="visible: showLoad() == true">
+          <div class="content">
+              <oj-progress id="progressCircle" type="circle" value="{{progressValue}}"></oj-progress>
+              Cargando...
+          </div>
+        </div>
         <!--
            ** Oracle JET V5.2.0 web application header pattern.
            ** Please see the demos under Cookbook/Patterns/App Shell: Web

@@ -6,15 +6,18 @@
 /*
  * Your application specific code will go here
  */
-define(['ojs/ojcore', 'knockout', 'ojs/ojmodule-element-utils', 'ojs/ojmodule-element', 'ojs/ojrouter', 'ojs/ojknockout', 'ojs/ojarraytabledatasource',
-  'ojs/ojoffcanvas'],
-  function(oj, ko, moduleUtils) {
+define(['ojs/ojcore', 'knockout', 'mbe/mbe', 'ojs/ojmodule-element-utils', 'ojs/ojmodule-element', 'ojs/ojrouter', 'ojs/ojknockout', 'ojs/ojarraytabledatasource',
+  'ojs/ojoffcanvas', 'ojs/ojprogress'],
+  function(oj, ko, mbe, moduleUtils) {
     function ControllerViewModel() {
       var self = this;
       self.flag = ko.observable(false);
       self.username = ko.observable("avanttic");
       self.email = ko.observable("");
-      self.img = ko.observable("css/images/logo2.png");      
+      self.img = ko.observable("css/images/logo2.png");
+      
+      self.progressValue = ko.observable(20);
+      self.showLoad = ko.observable(false);
 
       // Media queries for repsonsive layouts
       var smQuery = oj.ResponsiveUtils.getFrameworkQuery(oj.ResponsiveUtils.FRAMEWORK_QUERY_KEY.SM_ONLY);
@@ -81,6 +84,9 @@ define(['ojs/ojcore', 'knockout', 'ojs/ojmodule-element-utils', 'ojs/ojmodule-el
       self.logout = function(){
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('user');
+        self.username("");
+        self.email("");
+        self.img("");
         self.flag(false);
         self.router.go('login');
       }

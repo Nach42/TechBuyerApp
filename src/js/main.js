@@ -27,6 +27,8 @@ requirejs.config(
     'ojs': 'libs/oj/v5.2.0/debug',
     'ojL10n': 'libs/oj/v5.2.0/ojL10n',
     'ojtranslations': 'libs/oj/v5.2.0/resources',
+    'mcs': 'mcs/mcs',
+    'mbe': 'mbe/mbe',
     'text': 'libs/require/text',
     'signals': 'libs/js-signals/signals',
     'customElements': 'libs/webcomponents/custom-elements.min',

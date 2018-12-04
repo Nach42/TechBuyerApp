@@ -72,3 +72,27 @@ body {
     padding-top: 40px;
     color: #979899;
 }
+
+li h3{
+    text-align: initial;
+}
+#loading_layer{
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0.7);
+    z-index: 10000;
+    height: 100vh;
+    width: 100vw;
+}
+    
+#loading_layer .content{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: black;
+}
+.navlist{
+    text-align: right;
+}

@@ -16,22 +16,18 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe'],
       self.login = function(token){
         //Comprobar si el user está guardado en la base de datos
         if(token === sessionStorage.getItem('token')){
-          //mbe.authenticate(self.loginSuccess, self.loginFailure);
-          console.log('login');
-          app.flag(true);
-          app.router.go("customers");
+          mbe.init();
+          mbe.authenticate(
+            function(response, data){
+              console.log("Conectado con éxito");
+              app.flag(true);
+              app.router.go("customers");
+            },
+            function(statusCode, data){
+              console.log("fallo al conectar");
+          });
         }
       };
-
-      // self.loginSuccess = function (response) {
-      //   console.log(response);
-      //   self.isLoggedIn(true);
-      // };
-
-      // self.loginFailure = function (statusCode) {
-      //     self.isLoggedIn(false);
-      //     alert("Login failed! " + statusCode);
-      // };
 
       self.connected = function() {
         if(sessionStorage.getItem('token')){
