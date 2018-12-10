@@ -6,9 +6,6 @@
   <h1>Mis listas</h1>
   <div>
     <div style="margin-top:20px">
-      <div class="navlist" data-bind="if: selectedItems().length > 0">
-          <button data-bind="click: deleteLists"><span class="	fa fa-trash"></span></button>
-      </div>
       <oj-list-view id="listviewLists" 
                     style="padding-top:20px;width:100%;height:500px;overflow-x:hidden" 
                     data="[[dataSource]]" 
@@ -20,8 +17,15 @@
   </div>
 </div>
 <script type="text/html" id="renderer_lists">
-  <li>
-    <h3 data-bind="text: nombre"></h3>
-    <h4 data-bind="text: createdOn"></h4>
+  <li data-bind="click: $parent.lista">
+    <div class="oj-flex" style="flex-wrap: nowrap">
+      <div class="oj-flex-item">
+        <h3 data-bind="text: nombre"></h3>
+        <h4 data-bind="text: createdOn"></h4>
+      </div>
+      <!-- <div style="text-align: right" class="oj-flex-item">
+        <oj-button on-oj-action="[[$parent.lista]]">Ver</oj-button>
+      </div> -->
+    </div>
   </li>
 </script>

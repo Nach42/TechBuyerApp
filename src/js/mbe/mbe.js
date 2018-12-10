@@ -41,14 +41,32 @@ define(['appController', 'jquery','mcs/mcs'], function (app, $, mcs) {
         // };
 
         self.sql = function(data, callback, errorCallback){
-            mcs.mobileBackend.authorization.authenticateAnonymous().then(function(){
+            // mcs.mobileBackend.authorization.authenticateAnonymous().then(function(){
                 var endpoint = "apidb_nd/sql";
                 mcs.mobileBackend.customCode.invokeCustomCodeJSONRequest(endpoint , "POST" , data)
                     .then(callback)
                     .catch(errorCallback);
-            }).catch(function(){
-                console.log('Error al conectar');
-            });
+            // }).catch(function(){
+            //     console.log('Error al conectar');
+            // });
+        }
+
+        self.traductor = function(input, callback){
+            var resource = 'https://translation.googleapis.com/language/translate/v2';
+            var data = {
+                q: input,
+                source: 'en',
+                target: 'es',
+                key: 'AIzaSyBRhrs0GPPQVJh9-DG3TRT0EaMoBtpeJ0A'
+            }
+            var config = {
+                type: "POST",
+                url: resource,
+                async: false,
+                data: data
+            }
+            
+            $.ajax(config).done(callback);
         }
     }
 

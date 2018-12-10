@@ -6,11 +6,16 @@
 /*
  * Your customer ViewModel code goes here
  */
-define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe', 'ojs/ojarraydataprovider', 'ojs/ojprogress'],
+define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe', 'ojs/ojarraydataprovider', 'ojs/ojprogress',  'ojs/ojbutton'],
  function(oj, ko, $, app, mbe) {
   
-    function CustomerViewModel() {
+    function ListasViewModel() {
       var self = this;
+
+      self.lista = function(lista, event){
+        self.selectedList(lista);
+        app.router.go("lista");
+      }
 
       self.deleteLists = function(){
         var items = self.selectedItems();
@@ -32,7 +37,6 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe', 'ojs/oja
             }
             mbe.sql(payload,
               function(response){
-                console.log(response);
                 setTimeout(function(){ 
                   app.showLoad(false);
                 }, 5000);
@@ -49,7 +53,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe', 'ojs/oja
 
       function getListas(){
         var payload = {
-          sql: 'SELECT * FROM "Lists" WHERE "email"=:email',
+          sql: 'SELECT * FROM "Lists" WHERE "email"=:email ORDER BY "createdOn" DESC',
           email: app.email()
         }
         mbe.sql(payload,
@@ -67,29 +71,35 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe', 'ojs/oja
       }
 
       function parserFecha(val) {
+        var hoy = new Date();        
         var dd = val.getDate();
         var mm = val.getMonth() + 1;
-        var yyyy = val.getFullYear();
-        return dd + '/' + mm + '/' + yyyy;
+        var yyyy = hoy.getFullYear() != val.getFullYear() ? '/' + yyyy : '';
+        var hours = val.getHours();
+        var min = val.getMinutes();
+        var date = dd + '/' + mm + ' - ' + yyyy;
+        date += hours + ':' + min;
+        return date;
       }
 
       self.connected = function() {
-        if(sessionStorage.getItem('token')){
+        if (sessionStorage.getItem('token')) {
           app.flag(true);
+          self.selectedItems = ko.observableArray([]);
+          self.listas = ko.observableArray();
+          self.dataSource = new oj.ArrayDataProvider(self.listas, { 'idAttribute': 'id' });
+          self.selectedList = ko.observable();
+
+          app.showLoad(true);
+          app.progressValue(-1);
+          setTimeout(function () {
+            app.showLoad(false);
+          }, 5000);
+          getListas();
         }else{
           app.flag(false);
           app.router.go('login');
-        }
-        self.selectedItems = ko.observableArray([]);
-        self.listas = ko.observableArray();
-        self.dataSource = new oj.ArrayDataProvider(self.listas, {'idAttribute': 'id'});
-
-        app.showLoad(true);
-        app.progressValue(-1);
-        setTimeout(function(){ 
-          app.showLoad(false);
-        }, 5000);
-        getListas();
+        }        
       };
 
       /**
@@ -113,6 +123,6 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe', 'ojs/oja
      * each time the view is displayed.  Return an instance of the ViewModel if
      * only one instance of the ViewModel is needed.
      */
-    return new CustomerViewModel();
+    return new ListasViewModel();
   }
 );

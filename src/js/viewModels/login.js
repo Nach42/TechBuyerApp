@@ -21,7 +21,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe'],
             function(response, data){
               console.log("Conectado con éxito");
               app.flag(true);
-              app.router.go("customers");
+              app.router.go("listas");
             },
             function(statusCode, data){
               console.log("fallo al conectar");
@@ -32,7 +32,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe'],
       self.connected = function() {
         if(sessionStorage.getItem('token')){
           app.flag(true);
-          app.router.go('customers');
+          app.router.go('listas');
         }
 
         require(['googleApi'], function () {
@@ -42,7 +42,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe'],
             auth2 = self.googleapi.auth2.init({
               client_id: '197286188976-qmug2hoh9ahipj7tbgi9cp9jb936ne5b.apps.' +
                 'googleusercontent.com',
-              cookiepolicy: 'single_host_origin'
+              cookiepolicy: 'none'
             });
             auth2.attachClickHandler(
               $('#google-signin-button')[0], // attach the handler to this button

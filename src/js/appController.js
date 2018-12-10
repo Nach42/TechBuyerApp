@@ -29,8 +29,9 @@ define(['ojs/ojcore', 'knockout', 'mbe/mbe', 'ojs/ojmodule-element-utils', 'ojs/
        self.router = oj.Router.rootInstance;
        self.router.configure({
          'login': {label: 'LogIn', isDefault: true},
+         'lista': {label: 'Lista'},
          'incidents': {label: 'Incidents'},
-         'customers': {label: 'Customers'},
+         'listas': {label: 'Listas'},
          'about': {label: 'About'}
        });
 
@@ -59,7 +60,7 @@ define(['ojs/ojcore', 'knockout', 'mbe/mbe', 'ojs/ojmodule-element-utils', 'ojs/
       var navData = [
       {name: 'Incidents', id: 'incidents',
        iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-fire-icon-24'},
-      {name: 'Customers', id: 'customers',
+      {name: 'Listas', id: 'listas',
        iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-people-icon-24'},
       {name: 'About', id: 'about',
        iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-info-icon-24'}
