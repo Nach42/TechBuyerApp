@@ -42,13 +42,27 @@ define(['appController', 'jquery','mcs/mcs'], function (app, $, mcs) {
 
         self.sql = function(data, callback, errorCallback){
             // mcs.mobileBackend.authorization.authenticateAnonymous().then(function(){
-                var endpoint = "apidb_nd/sql";
-                mcs.mobileBackend.customCode.invokeCustomCodeJSONRequest(endpoint , "POST" , data)
+                var resource = "apidb_nd/sql";
+                mcs.mobileBackend.customCode.invokeCustomCodeJSONRequest(resource , "POST" , data)
                     .then(callback)
                     .catch(errorCallback);
             // }).catch(function(){
             //     console.log('Error al conectar');
             // });
+        }
+
+        self.checkUser = function(email, callback, errorCallback){
+            var resource = "apidb_nd/getUsuarios/"+email;
+            mcs.mobileBackend.customCode.invokeCustomCodeJSONRequest(resource , "POST" , {})
+                .then(callback)
+                .catch(errorCallback);
+        }
+
+        self.insertUser = function(data, callback, errorCallback){
+            var resource = "apidb_nd/addObject";
+            mcs.mobileBackend.customCode.invokeCustomCodeJSONRequest(resource , "POST" , data)
+            .then(callback)
+            .catch(errorCallback);
         }
 
         self.traductor = function(input, callback){

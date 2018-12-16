@@ -14,5 +14,16 @@
     },
     "is_top_level": false,
     "variables": {}
+  },
+  "cordova-plugin-googleplus": {
+    "source": {
+      "type": "registry",
+      "id": "https://github.com/EddyVerbruggen/cordova-plugin-googleplus"
+    },
+    "is_top_level": true,
+    "variables": {
+      "REVERSED_CLIENT_ID": "com.googleusercontent.apps.197286188976-h8ktpnc751r63gi89m98h3g22fi0p6dv",
+      "WEB_APPLICATION_CLIENT_ID": "197286188976-h8ktpnc751r63gi89m98h3g22fi0p6dv.apps.googleusercontent.com"
+    }
   }
 }

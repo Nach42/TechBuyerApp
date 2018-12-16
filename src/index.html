@@ -113,9 +113,8 @@
                   <span><oj-bind-text value="[[email]]"></oj-bind-text></span>
                   <span slot="endIcon" :class="[[{'oj-icon demo-appheader-avatar': smScreen(), 'oj-component-icon oj-button-menu-dropdown-icon': !smScreen()}]]"></span>
                   <oj-menu id="menu1" slot="menu" style="display:none">
-                    <oj-option id="pref" value="pref">Preferences</oj-option>
-                    <oj-option id="help" value="help">Help</oj-option>
-                    <oj-option id="about" value="about">About</oj-option>
+                    <oj-option id="mylists" value="mylists" on-click="[[goToMyLists]]">My Lists</oj-option>
+                    <oj-option id="about" value="about" on-click="[[goToAbout]]">About</oj-option>
                     <oj-option id="out" value="out" on-click="[[logout]]">Sign Out</oj-option>
                   </oj-menu>
                 </oj-menu-button>

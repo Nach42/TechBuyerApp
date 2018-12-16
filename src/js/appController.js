@@ -30,7 +30,6 @@ define(['ojs/ojcore', 'knockout', 'mbe/mbe', 'ojs/ojmodule-element-utils', 'ojs/
        self.router.configure({
          'login': {label: 'LogIn', isDefault: true},
          'lista': {label: 'Lista'},
-         'incidents': {label: 'Incidents'},
          'listas': {label: 'Listas'},
          'about': {label: 'About'}
        });
@@ -58,8 +57,6 @@ define(['ojs/ojcore', 'knockout', 'mbe/mbe', 'ojs/ojmodule-element-utils', 'ojs/
 
       // Navigation setup
       var navData = [
-      {name: 'Incidents', id: 'incidents',
-       iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-fire-icon-24'},
       {name: 'Listas', id: 'listas',
        iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-people-icon-24'},
       {name: 'About', id: 'about',
@@ -83,13 +80,24 @@ define(['ojs/ojcore', 'knockout', 'mbe/mbe', 'ojs/ojmodule-element-utils', 'ojs/
       $("#navDrawer").on("ojclose", function() { $('#drawerToggleButton').focus(); });
 
       self.logout = function(){
-        sessionStorage.removeItem('token');
-        sessionStorage.removeItem('user');
-        self.username("");
-        self.email("");
-        self.img("");
-        self.flag(false);
-        self.router.go('login');
+        window.plugins.googleplus.logout(
+          function (msg) {
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('user');
+            self.username("");
+            self.email("");
+            self.img("");
+            self.flag(false);
+            self.router.go('login');
+          }
+        );
+      }
+
+      self.goToMyLists = function(){
+        self.router.go('listas');
+      }
+      self.goToAbout = function(){
+        self.router.go('about');
       }
      }
      return new ControllerViewModel();
