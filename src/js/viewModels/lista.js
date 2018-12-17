@@ -15,8 +15,68 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe', 'viewMod
             self.deleteItems = function(){
                 var items = self.selectedItems();
                 self.selectedItems();
-                console.log(items);
+                var query = "";
+                for (var i = 0; i < items.length; i++) {
+                    query += items[i] + ",";
+                }
+                query = query.substring(0, query.length - 1);
+                var payload = {
+                    sql: 'DELETE FROM "Lists" WHERE "id" IN (' + query + ')'
+                }
+                app.showLoad(true);
+                app.progressValue(-1);
+                mbe.sql(payload,
+                    function (response) {
+                        var payload = {
+                            sql: 'DELETE FROM "ProductList" WHERE "listId" IN (' + query + ')'
+                        }
+                        mbe.sql(payload,
+                            function (response) {
+                                setTimeout(function () {
+                                    app.showLoad(false);
+                                }, 5000);
+                                getListas();
+                            },
+                            function (response) {
+                                console.log(response);
+                        });
+                    },
+                    function (response) {
+                        console.log(response);
+                });
             }
+
+            self.deleteList = function(){
+                sessionStorage.removeItem('lista');
+                var listId = self.listId;
+                var payload = {
+                    sql: 'DELETE FROM "Lists" WHERE "id"=:listId',
+                    listId: listId
+                }
+                app.showLoad(true);
+                app.progressValue(-1);
+                setTimeout(function(){ 
+                    app.showLoad(false);
+                  }, 5000);
+                mbe.sql(payload,
+                    function(response){
+                      var payload = {
+                        sql: 'DELETE FROM "ProductList" WHERE "listId"=:listId',
+                        listId: listId+""
+                      }
+                      mbe.sql(payload,
+                        function(response){
+                          app.router.go('listas');
+                        },
+                        function(response){
+                          console.log(response);
+                        });
+                    },
+                    function(response){
+                      console.log(response);
+                });
+            }
+
             function getItems(){
                 var listId = self.listId+"";
                 var payload = {
@@ -72,14 +132,15 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe', 'viewMod
             }
 
             self.connected = function () {
-                if (sessionStorage.getItem('token')) {
+                if (sessionStorage.getItem('token') && sessionStorage.getItem('lista')) {
                     app.flag(true);
                 } else {
                     app.flag(false);
                     app.router.go('login');
                 }
-                self.listId = listas.selectedList().id;
-                self.listName = ko.observable(listas.selectedList().nombre);
+                var lista = JSON.parse(sessionStorage.getItem('lista'));
+                self.listId = lista.id;
+                self.listName = ko.observable(lista.nombre);
                 self.selectedItems = ko.observableArray([]);
 
                 self.items = ko.observableArray();

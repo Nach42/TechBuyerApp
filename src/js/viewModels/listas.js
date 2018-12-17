@@ -13,7 +13,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe', 'ojs/oja
       var self = this;
 
       self.lista = function(lista, event){
-        self.selectedList(lista);
+        sessionStorage['lista'] = JSON.stringify(lista);
         app.router.go("lista");
       }
 
@@ -85,10 +85,10 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe', 'ojs/oja
       self.connected = function() {
         if (sessionStorage.getItem('token')) {
           app.flag(true);
+          sessionStorage.removeItem('lista');
           self.selectedItems = ko.observableArray([]);
           self.listas = ko.observableArray();
           self.dataSource = new oj.ArrayDataProvider(self.listas, { 'idAttribute': 'id' });
-          self.selectedList = ko.observable();
 
           app.showLoad(true);
           app.progressValue(-1);

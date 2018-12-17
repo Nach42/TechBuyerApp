@@ -95,4 +95,28 @@ li h3{
 }
 .navlist{
     text-align: right;
+    padding: 5px;
+    border-left: 6px solid rgb(144, 186, 31);
+    border-radius: 5px;
+    background-color: lightgrey;
+}
+#deleteList{
+    font-size: 15px;
+    font-weight: 550;
+    background: red;
+    border: 1;
+    border-color: red;
+    width: 150px;
+    height: 40px;
+    border-radius: 5px;
+    /* margin-top: 10px;
+    margin-bottom: 20px; */
+    color: rgb(235, 221, 221);
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+#deleteListDiv{
+    margin-top: 40px;
+    text-align: center;
 }

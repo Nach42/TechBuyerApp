@@ -65,7 +65,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe'],
               email: email
             }
             sessionStorage['token'] = idToken;
-            sessionStorage['user'] = user;
+            sessionStorage['user'] = JSON.stringify(user);
 
             app.username(name);
             app.email(email);
