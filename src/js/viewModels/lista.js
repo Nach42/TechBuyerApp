@@ -15,33 +15,26 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe', 'viewMod
             self.deleteItems = function(){
                 var items = self.selectedItems();
                 self.selectedItems();
-                var query = "";
-                for (var i = 0; i < items.length; i++) {
-                    query += items[i] + ",";
+                var sql = 'DELETE FROM "ProductList" WHERE "id" IN (';
+                var payload = {}
+                for(var i=0;i<items.length; i++){
+                    sql += ':id'+i+',';
+                    payload["id"+i] = items[i]+"";
                 }
-                query = query.substring(0, query.length - 1);
-                var payload = {
-                    sql: 'DELETE FROM "Lists" WHERE "id" IN (' + query + ')'
-                }
+                sql = sql.substring(0, sql.length - 1);
+                sql +=')';
+                payload.sql = sql;
                 app.showLoad(true);
                 app.progressValue(-1);
+                setTimeout(function () {
+                    app.showLoad(false);
+                }, 5000);
+                
                 mbe.sql(payload,
-                    function (response) {
-                        var payload = {
-                            sql: 'DELETE FROM "ProductList" WHERE "listId" IN (' + query + ')'
-                        }
-                        mbe.sql(payload,
-                            function (response) {
-                                setTimeout(function () {
-                                    app.showLoad(false);
-                                }, 5000);
-                                getListas();
-                            },
-                            function (response) {
-                                console.log(response);
-                        });
+                    function(response){
+                        getItems();
                     },
-                    function (response) {
+                    function(response){
                         console.log(response);
                 });
             }
