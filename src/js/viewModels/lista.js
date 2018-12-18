@@ -35,7 +35,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe', 'viewMod
                         getItems();
                     },
                     function(response){
-                        console.log(response);
+                        alert('Error inesperado');
                 });
             }
 

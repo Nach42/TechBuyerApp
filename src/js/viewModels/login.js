@@ -20,6 +20,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe'],
             function(response, data){
               mbe.checkUser(app.email(), 
                 function(response){
+                  app.showLoad(false);
                   console.log('Existe el usuario');
                 },
                 function(response){
@@ -31,6 +32,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe'],
                     }
                     mbe.insertUser(payload,
                       function(response){
+                        app.showLoad(false);
                         console.log(response);
                       },
                       function(response){
@@ -48,6 +50,8 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe'],
       };
 
       self.signIn = function(){
+        app.showLoad(true);
+        app.progressValue(-1);
         console.log("Entrando en signIn");
         window.plugins.googleplus.login({
             'scopes': '', // optional, space-separated list of scopes, If not included or empty, defaults to `profile` and `email`.
