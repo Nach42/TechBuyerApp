@@ -65,6 +65,13 @@ define(['appController', 'jquery','mcs/mcs'], function (app, $, mcs) {
             .catch(errorCallback);
         }
 
+        self.beacons = function(name, callback, errorCallback){
+            var endpoint = "apidb_nd/getBeacons/"+name;
+            mcs.mobileBackend.customCode.invokeCustomCodeJSONRequest(endpoint , "POST" , {})
+                .then(callback)
+                .catch(errorCallback);
+        }
+
         self.traductor = function(input, callback){
             var resource = 'https://translation.googleapis.com/language/translate/v2';
             var data = {

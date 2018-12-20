@@ -98,6 +98,7 @@
         <variable name="WEB_APPLICATION_CLIENT_ID" value="197286188976-h8ktpnc751r63gi89m98h3g22fi0p6dv.apps.googleusercontent.com" />
         <variable name="PLAY_SERVICES_VERSION" value="11.8.0" />
     </plugin>
+    <plugin name="com.unarin.cordova.beacon" spec="https://github.com/petermetz/cordova-plugin-ibeacon.git" />
     <engine name="browser" spec="5.0.4" />
-    <engine name="android" spec="7.1.4" />
+    <engine name="android" spec="^7.1.4" />
 </widget>

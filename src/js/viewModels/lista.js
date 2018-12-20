@@ -6,37 +6,134 @@
 /*
  * Your incidents ViewModel code goes here
  */
-define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe', 'viewModels/listas', 'ojs/ojprogress'],
-    function (oj, ko, $, app, mbe, listas) {
+define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe', 'viewModels/listas', 'ojs/ojprogress', 'ojs/ojcheckboxset', 'ojs/ojselectcombobox', 'ojs/ojlabel'],
+    function (oj, ko, $, app, mbe) {
 
         function ListaViewModel() {
             var self = this;
 
-            self.deleteItems = function(){
-                var items = self.selectedItems();
-                self.selectedItems();
-                var sql = 'DELETE FROM "ProductList" WHERE "id" IN (';
-                var payload = {}
-                for(var i=0;i<items.length; i++){
-                    sql += ':id'+i+',';
-                    payload["id"+i] = items[i]+"";
+            function getBeacons(){
+                var nombre = 'Market';
+                mbe.beacons(nombre,
+                  function(response){
+                    var beacons = response.data.items[0].devices;
+                    for(var i in beacons){
+                        var beacon = beacons[i];
+                        self.mRegions.push({
+                            id: beacon.id,
+                            name: beacon.name,
+                            description: beacon.description,
+                            uuid: beacon.beacon.iBeacon.uuid,
+                            major: beacon.beacon.iBeacon.major,
+                            minor: beacon.beacon.iBeacon.minor,
+                            identifier: beacon.attributes.identifier
+                        });
+                    }
+                    detectBeacons();
+                  },
+                  function(response){
+                    console.log(response);
+                  });
+            }
+
+            var detectBeacons = function(){
+                var delegate = new cordova.plugins.locationManager.Delegate();
+                
+                delegate.didStartMonitoringForRegion = function (pluginResult) {};
+                delegate.didDetermineStateForRegion = function (pluginResult) {};
+                delegate.didRangeBeaconsInRegion = function(pluginResult) {
+                    if(pluginResult.beacons.length > 0){
+                        var beacon = convertToBeacon(pluginResult);
+                        updateDistance(beacon);
+                    }
                 }
-                sql = sql.substring(0, sql.length - 1);
-                sql +=')';
-                payload.sql = sql;
+                // delegate.didEnterRegion = function(pluginResult){}
+                // delegate.didExitRegion = function(pluginResult){};
+
+                cordova.plugins.locationManager.setDelegate(delegate);
+                cordova.plugins.locationManager.requestAlwaysAuthorization();
+                for(var i in self.mRegions){
+                    var b = self.mRegions[i];
+                    var br = new cordova.plugins.locationManager.BeaconRegion(b.identifier, b.uuid, b.minor, b.major);
+                    cordova.plugins.locationManager.startMonitoringForRegion(br);
+                    cordova.plugins.locationManager.startRangingBeaconsInRegion(br);
+                };
+                // mNearestBeaconDisplayTimer = setInterval(displayNearestBeacon, 1000);  
+            }
+
+            var convertToBeacon = function(pluginResult){
+                var beacon = {};
+                for(var i=0; i<self.mRegions.length;i++){
+                  if(self.mRegions[i].identifier == pluginResult.region.identifier){
+                    beacon = {                        
+                        id: self.mRegions[i].id,
+                        name: self.mRegions[i].name,
+                        description: self.mRegions[i].description,
+                        identifier: pluginResult.region.identifier,
+                        accuracy: pluginResult.beacons[0].accuracy
+                    };
+                  }
+                }
+                return beacon;
+            }
+
+            var updateDistance = function(beaconDetected){
+                for(var i=0; i<self.items().length; i++){
+                    if(self.items()[i].seccion && self.items()[i].seccion == beaconDetected.identifier){
+                        var distancia = beaconDetected.accuracy;
+                        var zona = 'Sección: '+beaconDetected.description;
+                        if(beaconDetected.accuracy <= 1){
+                            zona = 'Has llegado';
+                            distancia = 0;
+                        }                            
+                        self.items()[i].zona(zona);
+                        self.items()[i].distancia(distancia);
+                    }
+                }                           
+            }
+
+            self.reload = function(){
+                console.log("reload");
+                self.selectedItems([]);
+                self.mRegions = [];
+
                 app.showLoad(true);
                 app.progressValue(-1);
                 setTimeout(function () {
                     app.showLoad(false);
                 }, 5000);
+                getItems();
+
+                // DELETE ITEMS
+                // var items = self.selectedItems();
+                // self.selectedItems();
+                // var sql = 'DELETE FROM "ProductList" WHERE "id" IN (';
+                // var payload = {}
+                // for(var i=0;i<items.length; i++){
+                //     sql += ':id'+i+',';
+                //     payload["id"+i] = items[i]+"";
+                // }
+                // sql = sql.substring(0, sql.length - 1);
+                // sql +=')';
+                // payload.sql = sql;
+                // app.showLoad(true);
+                // app.progressValue(-1);
+                // setTimeout(function () {
+                //     app.showLoad(false);
+                // }, 5000);
                 
-                mbe.sql(payload,
-                    function(response){
-                        getItems();
-                    },
-                    function(response){
-                        alert('Error inesperado');
-                });
+                // mbe.sql(payload,
+                //     function(response){
+                //         getItems();
+                //     },
+                //     function(response){
+                //         alert('Error inesperado');
+                // });
+            }
+
+            self.checkItems = function(){
+                console.log("Check items");
+                
             }
 
             self.deleteList = function(){
@@ -98,8 +195,11 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe', 'viewMod
                                             if(data[i].productId == products[j].id_product){
                                                 items.push({
                                                     id: data[i].id,
+                                                    seccion: products[j].seccion,
                                                     nombre: products[j].nombre,
-                                                    unidades: data[i].unidades
+                                                    unidades: data[i].unidades,
+                                                    distancia: ko.observable(-1),
+                                                    zona: ko.observable()
                                                 });
                                             }
                                         }                                    
@@ -110,6 +210,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe', 'viewMod
                                         });
                                     }
                                     self.items(items);
+                                    getBeacons();
                                     app.showLoad(false);
                                 },
                                 function(error){
@@ -124,6 +225,19 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe', 'viewMod
                     });
             }
 
+            self.handleCheckbox = function(id) {
+                return self.selectedItems().indexOf(id) == -1 ? [] : ["checked"];
+            };
+            self.checkboxListener = function (event, data) {
+                if(event.detail != null){
+                    var value = event.detail.value;
+                    if(value.length > 0){
+                        self.selectedItems.push(data.id);
+                    }else{
+                        self.selectedItems.splice(self.selectedItems().indexOf(data.id), 1);
+                    }
+                }                
+            }
             self.connected = function () {
                 if (sessionStorage.getItem('token') && sessionStorage.getItem('lista')) {
                     app.flag(true);
@@ -135,6 +249,8 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe', 'viewMod
                 self.listId = lista.id;
                 self.listName = ko.observable(lista.nombre);
                 self.selectedItems = ko.observableArray([]);
+
+                self.mRegions = [];
 
                 self.items = ko.observableArray();
                 self.dataSource = new oj.ArrayDataProvider(self.items, { 'idAttribute': 'id' });

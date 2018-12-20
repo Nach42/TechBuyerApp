@@ -25,5 +25,13 @@
       "REVERSED_CLIENT_ID": "com.googleusercontent.apps.197286188976-h8ktpnc751r63gi89m98h3g22fi0p6dv",
       "WEB_APPLICATION_CLIENT_ID": "197286188976-h8ktpnc751r63gi89m98h3g22fi0p6dv.apps.googleusercontent.com"
     }
+  },
+  "com.unarin.cordova.beacon": {
+    "source": {
+      "type": "registry",
+      "id": "https://github.com/petermetz/cordova-plugin-ibeacon.git"
+    },
+    "is_top_level": true,
+    "variables": {}
   }
 }

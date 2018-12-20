@@ -24,6 +24,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe'],
                   console.log('Existe el usuario');
                 },
                 function(response){
+                  app.showLoad(false);
                   if(response.statusCode == 400){
                     var payload = {
                       table: 'Usuarios',
@@ -50,9 +51,9 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'appController', 'mbe/mbe'],
       };
 
       self.signIn = function(){
+        console.log("Entrando en signIn");
         app.showLoad(true);
         app.progressValue(-1);
-        console.log("Entrando en signIn");
         window.plugins.googleplus.login({
             'scopes': '', // optional, space-separated list of scopes, If not included or empty, defaults to `profile` and `email`.
             'webClientId': '197286188976-qmug2hoh9ahipj7tbgi9cp9jb936ne5b.apps.googleusercontent.com', // optional clientId of your Web application from Credentials settings of your project - On Android, this MUST be included to get an idToken. On iOS, it is not required.

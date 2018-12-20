@@ -6,8 +6,11 @@
     <h1 data-bind="text: listName"></h1>
     <div>
         <div style="margin-top:20px">
-            <div class="navlist" data-bind="if: selectedItems().length > 0">
-                <button data-bind="click: deleteItems"><span data-bind="text: selectedItems().length "></span><span class="fa fa-trash"></span></button>
+            <div class="navlist oj-flex">
+                <div class="oj-flex-item" data-bind="if: selectedItems().length > 0">
+                    <oj-button on-oj-action="[[checkItems]]"><span class="fa fa-check-square-o"></span></oj-button>
+                </div>
+                <oj-button on-oj-action="[[reload]]"><span class="fa fa-repeat"></span></oj-button>
             </div>
             <oj-list-view id="listviewItems" 
                     style="padding-top:20px;width:100%;overflow-x:hidden" 
@@ -28,9 +31,18 @@
 <script type="text/html" id="renderer_items">
     <li>
       <div class="oj-flex" style="flex-wrap: nowrap">
-        <div class="oj-flex-item">
+        <div class="oj-flex-item" style="margin:auto;max-width:40px;">
+            <oj-checkboxset value='[[$parent.handleCheckbox(id)]]'
+                            on-value-changed='[[$parent.checkboxListener]]'
+                            class='oj-checkboxset-no-chrome oj-clickthrough-disabled'>
+                <oj-option value="checked"></oj-option>
+            </oj-checkboxset>
+        </div>
+        <div class="oj-flex-item" style="margin:auto;margin-left:15px;">
           <h3 data-bind="text: nombre"></h3>
-          <h4 data-bind="text: unidades + (unidades != 1 ? ' unidades' : ' unidad')"></h4>
+          <!-- <h4 data-bind="text: unidades + (unidades != 1 ? ' unidades' : ' unidad')"></h4> -->
+          <h4 style="font-weight:550" data-bind="text: zona"></h4>
+          <h4 data-bind="text: distancia() == -1 ? 'Cargando...' : distancia() + ' metros'"></h4>
         </div>
         <!-- <div style="text-align: right" class="oj-flex-item">
           <oj-button on-oj-action="[[$parent.lista]]">Ver</oj-button>
